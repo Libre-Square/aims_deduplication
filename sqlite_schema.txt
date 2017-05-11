@@ -1,0 +1,157 @@
+CREATE TABLE OPISRecords
+(
+  publication_id character(10) not null,
+  title character varying(10485760),
+  title_html character varying(10485760),
+  citation_code character(5),
+  citation_name character varying(255),
+  other_information character varying(255),
+  edition_description_code character(1),
+  edition_number character varying(80),
+  edition_subnumber character varying(30),
+  pagination character varying(80),
+  publication_country_code character(5),
+  publication_country character varying(50),
+  publication_city character varying(255),
+  publication_date_yyyy character(4),
+  publication_date_mm character(2),
+  publication_date_dd character(2),
+  publisher_code character(5),
+  publisher_name character varying(255),
+  language_name character varying(40),
+  category_code character(5),
+  category_description character varying(255),
+  subcategory_description character varying(60),
+  classification_description character varying(40),
+  first_cu_author_capacity character(1),
+  keyword_01 character varying(40),
+  keyword_02 character varying(40),
+  keyword_03 character varying(40),
+  submission_date timestamp without time zone,
+  submission_status character(2),
+  remark_to_rtao character varying(10485760),
+  remark_from_rtao character varying(10485760),
+  url character varying(255),
+  cupub character(1),
+  pub_full_path character varying(255),
+  word_title_path character varying(255),
+  author_sequence smallint,
+  staff_id character(6),
+  student_id character(11),
+  author_name character varying(40),
+  author_identity_code character(2),
+  cu_coordinator character(1),
+  pseudonym_name character varying(40),
+  no_other_inst smallint,
+  staff_type_code character(2),
+  staff_title character(4),
+  staff_name_english character varying(50),
+  staff_name_chinese character varying(40),
+  preferred_name_english character varying(50),
+  preferred_name_chinese character varying(40),
+  preferred_org_unit_code character(7),
+  sex character(1),
+  email_address character varying(40),
+  postgraduate_ind character(1),
+  student_name character varying(40),
+  major character varying(50),
+  study_year integer,
+  dept_code character(7),
+  create_date timestamp without time zone,
+  name_update timestamp without time zone,
+  study_update timestamp without time zone,
+  staff_name character varying(40),
+  dept_seq character(4),
+  dept_desc character varying(70),
+  fac_code character(3),
+  fac_desc character varying(70),
+  panel_code character(5),
+  cu_category_code character(5),
+  cu_category_description character varying(255)
+, ugc_category character varying (10))
+
+CREATE TABLE "OPISRecordsInfo" (
+	`publication_id`	character(10),
+	`title`	charactervarying(10485760),
+	`citation_name`	charactervarying(255),
+	`edition_number`	charactervarying(80),
+	`edition_subnumber`	charactervarying(30),
+	`pagination`	charactervarying(80),
+	`pubdate`	character(10),
+	`doi`	charactervarying(255),
+	`language_name`	charactervarying(40),
+	`author_list`	charactervarying(10485760),
+	`ugc_category`	charactervarying(10),
+	`cu_category_description`	charactervarying(10485760),
+	PRIMARY KEY(publication_id)
+)
+
+
+CREATE TABLE "WOSRecordsInfo" (
+	wosid	character varying(30) primary key,
+	document_type	TEXT,
+	title	TEXT,
+	source	TEXT,
+	volume	TEXT,
+	issue	TEXT,
+	pages	TEXT,
+	pubyear	charactervarying(4),
+	publication_date	timestamp without time zone,
+	authors	TEXT,
+	publisher	TEXT,
+	doi	TEXT, v1_done char(1))
+
+
+CREATE TABLE opisRecordDelete
+(
+  publicationid character varying(30) primary key,
+  isdeleted character varying(1) NOT NULL,
+  deletedate timestamp without time zone
+)
+
+
+CREATE TABLE opisWOSMachineMatch
+(
+  wosid character varying(30) NOT NULL,
+  publicationid character varying(30) NOT NULL,
+  doiismatch character varying(1) NOT NULL,
+  titlematchvalue numeric(4,3)
+, titleMatchType varchar(1))
+
+
+CREATE TABLE opisWOSManualMatch
+(
+  wosid character varying(30) NOT NULL,
+  publicationid character varying(30) NOT NULL,
+  ismatch character varying(1) NOT NULL,
+  lastverifydate timestamp without time zone
+)
+
+
+CREATE TABLE opisWOSMatchTitle
+(
+  wosid character varying(30),
+  title text,
+  opistitlematch text,
+  titlematchvalue numeric(4,3)
+)
+
+
+CREATE TABLE "opisWOSMatchTitleIncomplete"
+(
+  wosid character varying(30),
+  title text,
+  opistitlematch text,
+  titlematchvalue numeric(4,3)
+)
+
+
+CREATE INDEX WOSRecordsInfo_v1done_pubyear_wosid_desc ON WOSRecordsInfo (v1_done DESC, pubyear DESC, wosid DESC)
+
+CREATE INDEX opisRecordDelete_publicationId_isDeleted ON opisRecordDelete(publicationId, isDeleted)
+
+CREATE INDEX opisWOSMachineMatch_wosId_doiIsMatch_titleMatchValue ON opisWOSMachineMatch(wosId, doiIsMatch, titleMatchValue)
+
+CREATE INDEX opisWOSManualMatch_wosid_lastVerifyDate ON opisWOSManualMatch(wosId, lastVerifyDate)
+
+
